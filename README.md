@@ -179,7 +179,7 @@ Pastikan pengaturan koneksi PHP sesuai dengan kredensial MariaDB di server CentO
 
 ### Step 1: Buka File `konek_database.php`
 ```bash
-sudo nano /var/www/html/konek_database.php
+sudo nano /var/www/html/UUKitnsa/konek_database.php
 ```
 
 ### Step 2: Sesuaikan Variabel Koneksi
