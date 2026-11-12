@@ -66,7 +66,7 @@ sudo mysql_secure_installation
 ```
 * **Enter current password for root**: Tekan `Enter` (default kosong).
 * **Switch to unix_socket authentication**: Ketik `n`.
-* **Change the root password?**: Ketik `y` lalu masukkan password baru (misal: `password` atau biarkan kosong jika untuk kebutuhan lokal lab).
+* **Change the root password?**: Ketik `y` lalu masukkan password baru (misal: `root`).
 * **Remove anonymous users?**: Ketik `y`.
 * **Disallow root login remotely?**: Ketik `y`.
 * **Remove test database and access to it?**: Ketik `y`.
@@ -102,7 +102,7 @@ cd /var/www/html
 ### Step 2: Hapus File Bawaan (Jika Ada) & Clone Repositori
 ```bash
 sudo rm -rf *
-sudo git clone https://github.com/hirga-putra/UUKitnsa .
+sudo git clone https://github.com/hirga-putra/UUKitnsa
 ```
 *(Catatan: Tanda titik `.` di akhir perintah bertujuan agar file ter-clone langsung di dalam folder `/var/www/html` tanpa membuat folder tambahan).*
 
@@ -160,10 +160,14 @@ CREATE TABLE IF NOT EXISTS exams (
 
 -- 4. Insert Default Akun Admin & Siswa
 INSERT INTO users (username, password, full_name, role, user_class, nis) VALUES
-('admin', 'admin', 'Tim Penguji TKJ', 'admin', 'Penguji', 'NIP19850101'),
+('admin', 'admin123', 'Tim Penguji TKJ', 'admin', 'Penguji', 'NIP19850101'),
 ('siswa', 'siswa123', 'Budi Santoso', 'siswa', 'XI TKJ 4', '222301');
 
--- 5. Keluar dari MariaDB
+-- 5. Modifikasi user
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+FLUSH PRIVILEGES;
+
+-- 6. Keluar dari MariaDB
 EXIT;
 ```
 
@@ -185,7 +189,7 @@ Pastikan isi variabel disesuaikan dengan konfigurasi server Anda:
 <?php
 $host     = "localhost";
 $username = "root";
-$password = "";           // Isi sesuai password root MariaDB Anda (kosongkan jika tanpa password)
+$password = "root";           // Isi sesuai password root MariaDB Anda (kosongkan jika tanpa password)
 $database = "db_uuk_tkj";
 
 $koneksi = mysqli_connect($host, $username, $password, $database);
@@ -226,7 +230,7 @@ Setelah seluruh instalasi selesai, lakukan pengujian koneksi dan aplikasi dari k
 ### Step 3: Pengujian Fitur Hak Akses (Login & CRUD)
 * **Pengujian Akun Admin (Guru)**:
   * Username: `admin`
-  * Password: `admin`
+  * Password: `admin123`
   * *Verifikasi*: Pastikan halaman menampilkan **Dashboard Guru/Penguji**, fitur **Tambah Ujian**, **Edit**, **Hapus (CRUD)**, serta fitur **Kelola User & Reset Password Siswa** berfungsi dengan lancar.
 * **Pengujian Akun Siswa**:
   * Username: `siswa`
